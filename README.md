@@ -197,9 +197,6 @@ trajectories for valid chains.
 <img src="https://raw.githubusercontent.com/groundlens-dev/hamiltonian-ai/main/docs/assets/Symplectic.png" width="640" alt="Pendulum motion and its closed orbit in phase space" />
 <br><sub>Phase space, the natural habitat of a Hamiltonian: a pendulum's motion traces a closed orbit in (angle, velocity). A reasoning chain traces an analogous trajectory in embedding space.</sub>
 </div>
-
-<!-- figure (pending): valid-vs-invalid energy distribution plot + experiment figures -->
-
 **Caveat, as the paper states it:** the framework's claimed ability to *steer*
 or *improve* reasoning is metaphorical and not empirically established. The solid
 contribution is the **diagnostic geometry**, not a causal mechanism. This
