@@ -73,7 +73,7 @@ nav:
     - Quickstart: getting-started/quickstart.md
   - Optimizer:
     - Usage: optimizer/usage.md
-    - Benchmark (honest framing): optimizer/benchmark.md
+    - Benchmark (scoped framing): optimizer/benchmark.md
   - Reasoning diagnostics: reasoning/index.md
   - Limits: limits/index.md
   - Papers: papers.md

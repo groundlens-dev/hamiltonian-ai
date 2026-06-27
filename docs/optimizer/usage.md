@@ -48,4 +48,4 @@ destabilizing updates. `HamiltonianOptimizerAdvanced` applies a Forest-Ruth
 - Domains where it has not been validated (vision, NLP). The only validated
   domain is credit scoring.
 
-See the [honest benchmark](benchmark.md) and the [limits](../limits/index.md).
+See the [scoped benchmark](benchmark.md) and the [limits](../limits/index.md).

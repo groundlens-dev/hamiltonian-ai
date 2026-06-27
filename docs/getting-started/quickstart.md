@@ -43,4 +43,4 @@ python examples/optimizer_minimal.py
 ```
 
 Next: [Optimizer usage](../optimizer/usage.md) and the
-[honest benchmark](../optimizer/benchmark.md).
+[scoped benchmark](../optimizer/benchmark.md).

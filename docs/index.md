@@ -30,14 +30,14 @@ systems. It is deliberately bounded:
   geometric structure consistently underperforms Adam/SGD. This is the
   credibility anchor.
 
-The honest summary: *geometric structure is a useful diagnostic and a niche
+The summary, precisely: *geometric structure is a useful diagnostic and a niche
 stability tool, not a general performance win.*
 
 ## Where to start
 
 - [Installation](getting-started/installation.md)
 - [Quickstart](getting-started/quickstart.md)
-- [Optimizer usage](optimizer/usage.md) and its [honest benchmark](optimizer/benchmark.md)
+- [Optimizer usage](optimizer/usage.md) and its [scoped benchmark](optimizer/benchmark.md)
 - [Reasoning diagnostics](reasoning/index.md)
 - [Limits](limits/index.md) — read this to understand the scope
 - [Papers](papers.md)

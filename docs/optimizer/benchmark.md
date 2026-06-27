@@ -1,4 +1,4 @@
-# Optimizer — honest benchmark framing
+# Optimizer — scoped benchmark framing
 
 !!! danger "The headline you will not see here"
     This page does **not** claim the optimizer beats Adam, SGD, or XGBoost.
