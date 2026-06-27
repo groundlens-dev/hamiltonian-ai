@@ -1,6 +1,6 @@
 # hamiltonian-ai
 
-**Energy-geometry methods for neural systems.**
+**Symmetry, invariance, and structure in neural optimization.**
 
 A small library — a symplectic optimizer — plus reproducible studies on the
 geometry of reasoning, and an explicit map of where geometric structure stops
@@ -10,6 +10,10 @@ helping.
     Part of the [Groundlens](https://github.com/groundlens-dev) family —
     alongside [groundlens](https://github.com/groundlens-dev/groundlens) and
     [otwin](https://github.com/groundlens-dev/otwin).
+
+![Hamiltonian mechanics mapped to neural-network optimization](assets/HamiltonianSystems.png)
+*The core equivalence: a mechanical trajectory in phase space and a neural network's loss
+landscape read as a Hamiltonian phase space.*
 
 ## What this is
 

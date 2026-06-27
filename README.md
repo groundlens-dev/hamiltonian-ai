@@ -78,7 +78,10 @@ stability tool — not a general performance win.*
 | **Applications** | The out-of-time credit-scoring evaluation the optimizer was validated on | [`applications/credit-scoring/`](applications/credit-scoring/) |
 | **Papers** | The underlying preprints and peer-reviewed work | [`papers/`](papers/) |
 
-<!-- figure: drop docs/assets/hamiltonian_phase_space.png — "Hamiltonian system in mechanics ↔ loss/phase space" conceptual diagram -->
+<div align="center">
+<img src="https://raw.githubusercontent.com/groundlens-dev/hamiltonian-ai/main/docs/assets/hamiltonian_equivalence.png" width="760" alt="Hamiltonian mechanics mapped onto a neural-network loss / phase space" />
+<br><sub>The same picture in two domains: a mechanical trajectory in phase space (left) and a neural network's loss landscape read as a Hamiltonian phase space (right). <code>H = T − V</code>.</sub>
+</div>
 
 ## Installation
 
@@ -131,8 +134,13 @@ symplectic Euler in the base class, Forest–Ruth 4th-order in
 `base_loss + lambda_reg · potential`, where the potential term penalizes large
 parameter energy (damping oscillations in parameter space).
 
-<!-- figure: drop docs/assets/gd_vs_hamiltonian.png — "Step-by-step gradient descent vs Hamiltonian (momentum-based) on a loss surface" -->
-<!-- figure: drop docs/assets/nn_optimization_block.png — "NN + Hamiltonian loss + symplectic optimizer block diagram" -->
+<div align="center">
+<img src="https://raw.githubusercontent.com/groundlens-dev/hamiltonian-ai/main/docs/assets/HamiltoniainOptimization.png" width="680" alt="Gradient descent vs Hamiltonian momentum-based trajectories on a loss surface" />
+<br><sub>Step-by-step gradient descent (red) vs the Hamiltonian, momentum-based trajectory (orange) on the same loss surface.</sub>
+<br><br>
+<img src="https://raw.githubusercontent.com/groundlens-dev/hamiltonian-ai/main/docs/assets/Loan_risk-02.png" width="720" alt="Network, Hamiltonian loss and symplectic optimizer block diagram" />
+<br><sub>The training loop: the network feeds a Hamiltonian loss, which the symplectic optimizer integrates over the Hamiltonian loss space.</sub>
+</div>
 
 ### API
 
@@ -185,9 +193,12 @@ form a narrow, peaked energy distribution; invalid ones spread broadly toward
 higher energy. Curvature analysis (Frenet–Serret) shows smoother, lower-curvature
 trajectories for valid chains.
 
-<!-- figure: drop docs/assets/reasoning_energy_distribution.png — Fig. 9, valid (narrow) vs invalid (broad) energy distributions -->
-<!-- figure: drop docs/assets/pendulum_phase_space.png — pendulum motion ↔ phase-space orbit (intuition) -->
-<!-- figure: drop docs/assets/<experiment figures Javier will provide> -->
+<div align="center">
+<img src="https://raw.githubusercontent.com/groundlens-dev/hamiltonian-ai/main/docs/assets/Symplectic.png" width="640" alt="Pendulum motion and its closed orbit in phase space" />
+<br><sub>Phase space, the natural habitat of a Hamiltonian: a pendulum's motion traces a closed orbit in (angle, velocity). A reasoning chain traces an analogous trajectory in embedding space.</sub>
+</div>
+
+<!-- figure (pending): valid-vs-invalid energy distribution plot + experiment figures -->
 
 **Caveat, as the paper states it:** the framework's claimed ability to *steer*
 or *improve* reasoning is metaphorical and not empirically established. The solid

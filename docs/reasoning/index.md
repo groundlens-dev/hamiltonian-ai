@@ -10,6 +10,10 @@ Hamiltonian "energy" that balances:
 - **kinetic energy** — reasoning *progression*, and
 - **potential energy** — *question relevance*.
 
+
+![Configuration space and phase space](../assets/Manifold-06.png)
+*From configuration space (model parameters) to phase space — where a Hamiltonian lives.*
+
 ## The finding
 
 Valid reasoning chains show **lower and more stable** Hamiltonian energy than
