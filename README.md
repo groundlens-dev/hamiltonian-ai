@@ -224,7 +224,7 @@ hamiltonian-ai/
 ## Documentation
 
 Full docs (mkdocs-material, same design as the rest of Groundlens) cover
-installation, the optimizer API, the honest benchmark, the reasoning diagnostics,
+installation, the optimizer API, the scoped benchmark, the reasoning diagnostics,
 and the limits study: **[docs.groundlens.dev/hamiltonian-ai](https://docs.groundlens.dev/hamiltonian-ai)**.
 Build locally with `pip install -e ".[docs]" && mkdocs serve`.
 
