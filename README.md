@@ -2,8 +2,7 @@
 
 <!-- logo: drop org logo here -->
 
-# hamiltonian-ai
-## Symmetry, invariance, and structure in neural optimization
+# Hamiltonian-AI: Symmetry, Invariance, and Structure in Neural Optimization
 
 Symplectic optimization, phase-space diagnostics of reasoning, and a candid map of where geometric structure helps — and where it does not.
 
@@ -17,25 +16,26 @@ Symplectic optimization, phase-space diagnostics of reasoning, and a candid map 
 
 </div>
 
-> **A Groundlens research line.** Part of the [Groundlens](https://github.com/groundlens-dev) family — alongside [groundlens](https://github.com/groundlens-dev/groundlens) (geometric LLM verification) and [otwin](https://github.com/groundlens-dev/otwin) (physics-informed digital twins).
+*A Groundlens research line. Part of the [Groundlens](https://github.com/groundlens-dev) family — alongside [groundlens](https://github.com/groundlens-dev/groundlens) (geometric LLM verification) and [otwin](https://github.com/groundlens-dev/otwin) (physics-informed digital twins).*
 
 ---
 
-> *"Symmetry, as wide or narrow as you may define its meaning, is one idea by which man through the ages has tried to comprehend and create order, beauty, and perfection."* — Hermann Weyl, *Symmetry* (1952)
+> *"Symmetry, as wide or narrow as you may define its meaning, is one idea by which man through the ages has tried to comprehend and create order, beauty, and perfection."* 
+>
+> — Hermann Weyl, *Symmetry* (1952)
 
-## The idea
+## The Journey
 
-Physics earns its predictive power from **symmetry**: when a system is left
-unchanged by a transformation, something is conserved. Invariance under time
-translation gives conservation of energy; the bookkeeping device for that
+This journey starts with understanding that physics earns its predictive power from 
+**symmetry**: when a system is left unchanged by a transformation, something is conserved. 
+Invariance under time translation gives conservation of energy; the bookkeeping device for that
 conservation is the **Hamiltonian**, and its natural habitat is **phase space**,
 a geometry that a symplectic structure keeps intact as the system evolves
-(Noether; Weyl 1952; and the synthesis of symmetry, invariance and structure in
-Glattfelder 2019, ch. 3).
+(Noether; Weyl 1952) and the synthesis of symmetry, invariance and structure.
 
-This repository asks a single question across two settings: *what happens when
+This repository asks a single question across two problems: *what happens when
 we treat a neural system as a Hamiltonian one* — its parameters as positions,
-its gradients as momenta, its loss as an energy landscape? Two answers emerge,
+its gradients as momenta, its loss as an energy landscape? We have found two possible answers,
 and this repository is organized to show **both**:
 
 - a **diagnostic** that works: the phase-space energy of an LLM's reasoning
@@ -43,7 +43,7 @@ and this repository is organized to show **both**:
 - a **boundary** that is just as important: as a *general* optimizer, geometric
   structure does not beat Adam or SGD.
 
-The one-line summary: *geometric structure is a useful diagnostic and a niche
+For our journey, *geometric structure is a useful diagnostic and a niche
 stability tool — not a general performance win.*
 
 ## Contents
@@ -56,7 +56,7 @@ stability tool — not a general performance win.*
   - [API](#api)
   - [Results, in scope](#results-in-scope)
 - [Reasoning geometry](#reasoning-geometry)
-- [Where it helps — and where it doesn't](#where-it-helps--and-where-it-doesnt)
+- [The limits of geometric optimization](#the-limits-of-geometric-optimization)
 - [Scope](#scope)
 - [Repository layout](#repository-layout)
 - [Documentation](#documentation)
@@ -205,7 +205,7 @@ diagnostic thread is the conceptual ancestor of
 
 → [`studies/reasoning-geometry/`](studies/reasoning-geometry/)
 
-## Where it helps — and where it doesn't
+## The limits of geometric optimization
 
 A separate, systematic study tested whether *generic* isotropic geometric
 structure helps optimization at all — a Geometric Preconditioned Method across
