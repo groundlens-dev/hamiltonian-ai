@@ -165,7 +165,7 @@ Read it carefully:
 - **The symplectic model wins AUC at every horizon (0.80 / 0.76 / 0.70)** — it
   actually *ranks* risk. That ranking degrades with the horizon (0.80→0.70), so
   this is "better discrimination," not "no degradation."
-- **The honest claim:** for out-of-time, class-imbalanced risk ranking, the
+- **The claim, precisely:** for out-of-time, class-imbalanced risk ranking, the
   symplectic optimizer delivers real discriminative power where a strong
   gradient-boosted baseline collapses to near-chance ranking. *If you do not
   have that problem, use Adam, SGD, or XGBoost.*
