@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hamiltonian_ai"
+version = "0.1.0"
+authors = [
+    {name = "Javier Marin", email = "javier@jmarin.info"},
+]
+description = "Energy-geometry methods for neural systems: a symplectic optimizer for temporal stability, plus reasoning-geometry diagnostics."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+keywords = [
+    "pytorch", "optimizer", "symplectic", "hamiltonian",
+    "temporal-stability", "distribution-shift", "phase-space",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=1.10.0",
+    "numpy>=1.19.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "ruff>=0.1.0",
+]
+docs = [
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/groundlens-dev/hamiltonian-ai"
+"Documentation" = "https://docs.groundlens.dev/hamiltonian-ai"
+"Repository" = "https://github.com/groundlens-dev/hamiltonian-ai"
+"Issues" = "https://github.com/groundlens-dev/hamiltonian-ai/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
