@@ -3,23 +3,48 @@
 <!-- logo: drop org logo here -->
 
 # hamiltonian-ai
-## Energy-geometry methods for neural systems
+## Symmetry, invariance, and structure in neural optimization
 
-A symplectic optimizer for temporal stability, plus reproducible studies on the geometry of reasoning — and a systematic map of where geometric structure stops helping.
+Symplectic optimization, phase-space diagnostics of reasoning, and a candid map of where geometric structure helps — and where it does not.
 
 [![Python](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue?style=flat-square)](https://github.com/groundlens-dev/hamiltonian-ai)
+[![Tests](https://img.shields.io/github/actions/workflow/status/groundlens-dev/hamiltonian-ai/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/groundlens-dev/hamiltonian-ai/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Docs](https://img.shields.io/badge/docs-docs.groundlens.dev%2Fhamiltonian--ai-blue?style=flat-square)](https://docs.groundlens.dev/hamiltonian-ai)
 [![arXiv](https://img.shields.io/badge/arXiv-2410.04415-b31b1b?style=flat-square)](https://arxiv.org/abs/2410.04415)
-[![Status](https://img.shields.io/badge/status-research%20line-orange?style=flat-square)](#scope)
 
-[Overview](#overview) · [Install](#installation) · [Quickstart](#quickstart) · [Optimizer](#the-optimizer) · [Studies](#studies) · [Scope](#scope) · [Papers](#papers) · [Docs](https://docs.groundlens.dev/hamiltonian-ai)
+[Overview](#overview) · [Install](#installation) · [Quickstart](#quickstart) · [Optimizer](#the-optimizer) · [Reasoning](#reasoning-geometry) · [Scope](#scope) · [Papers](#papers) · [Docs](https://docs.groundlens.dev/hamiltonian-ai)
 
 </div>
 
 > **A Groundlens research line.** Part of the [Groundlens](https://github.com/groundlens-dev) family — alongside [groundlens](https://github.com/groundlens-dev/groundlens) (geometric LLM verification) and [otwin](https://github.com/groundlens-dev/otwin) (physics-informed digital twins).
 
 ---
+
+> *"Symmetry, as wide or narrow as you may define its meaning, is one idea by which man through the ages has tried to comprehend and create order, beauty, and perfection."* — Hermann Weyl, *Symmetry* (1952)
+
+## The idea
+
+Physics earns its predictive power from **symmetry**: when a system is left
+unchanged by a transformation, something is conserved. Invariance under time
+translation gives conservation of energy; the bookkeeping device for that
+conservation is the **Hamiltonian**, and its natural habitat is **phase space**,
+a geometry that a symplectic structure keeps intact as the system evolves
+(Noether; Weyl 1952; and the synthesis of symmetry, invariance and structure in
+Glattfelder 2019, ch. 3).
+
+This repository asks a single question across two settings: *what happens when
+we treat a neural system as a Hamiltonian one* — its parameters as positions,
+its gradients as momenta, its loss as an energy landscape? Two answers emerge,
+and this repository is organized to show **both**:
+
+- a **diagnostic** that works: the phase-space energy of an LLM's reasoning
+  trajectory separates valid from invalid reasoning;
+- a **boundary** that is just as important: as a *general* optimizer, geometric
+  structure does not beat Adam or SGD.
+
+The one-line summary: *geometric structure is a useful diagnostic and a niche
+stability tool — not a general performance win.*
 
 ## Contents
 
@@ -30,48 +55,41 @@ A symplectic optimizer for temporal stability, plus reproducible studies on the 
   - [How it works](#how-it-works)
   - [API](#api)
   - [Results, in scope](#results-in-scope)
-- [Studies](#studies)
-  - [Reasoning geometry](#reasoning-geometry)
-  - [Geometry limits (negative result)](#geometry-limits-negative-result)
-- [Applications: credit scoring](#applications-credit-scoring)
-- [Scope: where it helps — and where it doesn't](#scope)
+- [Reasoning geometry](#reasoning-geometry)
+- [Where it helps — and where it doesn't](#where-it-helps--and-where-it-doesnt)
+- [Scope](#scope)
 - [Repository layout](#repository-layout)
 - [Documentation](#documentation)
 - [Papers](#papers)
-- [Citation](#citation)
+- [Citation & references](#citation--references)
 - [Contributing, conduct, security](#contributing-conduct-security)
-- [License](#license)
-- [About](#about)
+- [License](#license) · [About](#about)
 
 ---
 
 ## Overview
 
-**hamiltonian-ai** consolidates one line of work: applying energy and phase-space
-(Hamiltonian) geometry to neural systems. It is deliberately small and deliberately
-bounded. It contains four things:
+**hamiltonian-ai** consolidates one line of work into four parts:
 
 | Part | What it is | Where |
 |---|---|---|
-| **Library** | One packaged, reusable piece — a symplectic optimizer with a Hamiltonian energy view of the parameter dynamics | [`src/hamiltonian_ai/optimizer/`](src/hamiltonian_ai/optimizer/) |
-| **Studies** | Reproducible notebooks and write-ups: a phase-space lens on LLM reasoning, and a negative-results study on the limits of geometric optimization | [`studies/`](studies/) |
-| **Applications** | The credit-scoring work the optimizer was validated on | [`applications/credit-scoring/`](applications/credit-scoring/) |
+| **Library** | A symplectic optimizer with a Hamiltonian energy view of the parameter dynamics | [`src/hamiltonian_ai/optimizer/`](src/hamiltonian_ai/optimizer/) |
+| **Studies** | A phase-space lens on LLM reasoning, and a negative-results study on the limits of geometric optimization | [`studies/`](studies/) |
+| **Applications** | The out-of-time credit-scoring evaluation the optimizer was validated on | [`applications/credit-scoring/`](applications/credit-scoring/) |
 | **Papers** | The underlying preprints and peer-reviewed work | [`papers/`](papers/) |
 
-The one-line summary of the whole line: *geometric structure is a useful **diagnostic**
-and a niche **stability** tool — not a general performance win.* The repository is
-organized so that **both halves of that claim are visible**: the niche where it helps,
-and the systematic study of where it does not.
+<!-- figure: drop docs/assets/hamiltonian_phase_space.png — "Hamiltonian system in mechanics ↔ loss/phase space" conceptual diagram -->
 
 ## Installation
 
 ```bash
 pip install -e .
-python examples/optimizer_minimal.py   # smoke test of the API — not a benchmark
+pytest -q                                # minimal test suite
+python examples/optimizer_minimal.py     # smoke test — not a benchmark
 ```
 
 Requires Python ≥ 3.9, `torch ≥ 1.10`, `numpy ≥ 1.19`. The optimizer is the only
-installed component; the studies and applications run as notebooks in the repo.
+installed component; the studies and applications run as notebooks.
 
 ## Quickstart
 
@@ -87,7 +105,7 @@ optimizer = HamiltonianOptimizer(
     beta=0.9,         # momentum coefficient
     lambda_reg=0.01,  # potential-energy regularization (Hamiltonian loss term)
 )
-# ...standard PyTorch training loop: loss.backward(); optimizer.step()...
+# ...standard PyTorch loop: loss.backward(); optimizer.step()...
 ```
 
 Higher-order (Forest–Ruth, 4th-order symplectic) variant:
@@ -99,21 +117,22 @@ optimizer = HamiltonianOptimizerAdvanced(model.parameters(), lr=0.01, symplectic
 
 ## The optimizer
 
-> **Scope first: the optimizer trades peak accuracy for temporal stability /
-> robustness to distribution shift. It is not a general improvement over Adam or
+> **Scope first: the optimizer is built for out-of-time *ranking* under class
+> imbalance and distribution drift. It is not a general improvement over Adam or
 > SGD, and on standard in-distribution accuracy it generally loses to them.**
 
 ### How it works
 
 The update is treated as a **Hamiltonian system**: kinetic energy from momentum,
-potential energy from the parameters. Each step is scaled inversely with the total
-energy, which damps destabilizing updates, and is integrated with a **symplectic**
-scheme (symplectic Euler in the base class; Forest–Ruth 4th-order in
-`HamiltonianOptimizerAdvanced`). Paired with it is a **Hamiltonian loss** —
-`base_loss + lambda_reg · potential` — where the potential term penalizes large
-parameter energy, analogous to damping oscillations in a mechanical system. The
-design goal is *temporal* generalization: keeping a model's risk ranking stable as
-the data distribution drifts.
+potential energy from the parameters. Each step is scaled by the total energy
+(damping destabilizing updates) and integrated with a **symplectic** scheme —
+symplectic Euler in the base class, Forest–Ruth 4th-order in
+`HamiltonianOptimizerAdvanced`. Paired with it is a **Hamiltonian loss**,
+`base_loss + lambda_reg · potential`, where the potential term penalizes large
+parameter energy (damping oscillations in parameter space).
+
+<!-- figure: drop docs/assets/gd_vs_hamiltonian.png — "Step-by-step gradient descent vs Hamiltonian (momentum-based) on a loss surface" -->
+<!-- figure: drop docs/assets/nn_optimization_block.png — "NN + Hamiltonian loss + symplectic optimizer block diagram" -->
 
 ### API
 
@@ -122,88 +141,88 @@ the data distribution drifts.
 | `HamiltonianOptimizer` | `params, lr=1e-2, beta=0.9, epsilon=1e-8, lambda_reg=1e-2, weight_decay=0.0` | Symplectic-Euler base optimizer |
 | `HamiltonianOptimizerAdvanced` | `…, symplectic_order=4` | Forest–Ruth 4th-order symplectic integration |
 
-Both subclass `torch.optim.Optimizer` and work in any standard PyTorch loop.
+Both subclass `torch.optim.Optimizer` and drop into any standard PyTorch loop.
 
 ### Results, in scope
 
-On the IEEE DSAA 2025 credit-scoring study (Freddie Mac Single-Family Loan-Level
-Dataset), the method's **out-of-time ranking improves while its standard accuracy
-does not**:
+Out-of-time credit scoring on the Freddie Mac Single-Family Loan-Level Dataset,
+across 12 / 36 / 60-month horizons (`applications/credit-scoring/`). The pattern
+is a clean trade-off — and the point is *which metric matters under class
+imbalance*:
 
-- Out-of-time discriminative power: **AUC ≈ 0.80 vs ≈ 0.61** for conventional models.
-- Ablation: Hamiltonian normalization + momentum together account for a **+11.51%**
-  improvement over a standard neural network, with statistical-significance testing.
-- **Temporal stability**: minimal degradation across 12 / 36 / 60-month horizons,
-  where standard techniques decline more steeply.
-- **Cost**: standard accuracy, precision and recall are *lower* (gradient-boosted
-  trees win those); the win is forward-looking *ranking stability*, not accuracy.
+| Horizon | Symplectic AUC | XGBoost AUC | Symplectic Acc. | XGBoost Acc. |
+|---|---|---|---|---|
+| 12 months | **0.803** | 0.607 | 0.805 | 0.987 |
+| 36 months | **0.764** | 0.622 | 0.764 | 0.966 |
+| 60 months | **0.697** | 0.667 | 0.698 | 0.932 |
 
-| Dimension | Adam / SGD / XGBoost | Hamiltonian optimizer |
-|---|---|---|
-| Standard in-distribution accuracy | **win** | loses |
-| Out-of-time ranking (AUC) under drift | loses | **win** (this domain) |
-| Evidence base | broad, general-purpose | single domain (credit scoring) |
+Read it carefully:
 
-This is a trade-off, not a free lunch. **If you do not have a temporal
-distribution-shift problem, use Adam or SGD.**
+- **XGBoost wins accuracy by a wide margin (≈0.99) — but its AUC is close to
+  chance (0.61–0.67).** On heavily imbalanced default data, a model can score
+  ~99% accuracy by predicting "no default" for almost everyone while ranking
+  risk barely better than a coin. Accuracy is the wrong target here.
+- **The symplectic model wins AUC at every horizon (0.80 / 0.76 / 0.70)** — it
+  actually *ranks* risk. That ranking degrades with the horizon (0.80→0.70), so
+  this is "better discrimination," not "no degradation."
+- **The honest claim:** for out-of-time, class-imbalanced risk ranking, the
+  symplectic optimizer delivers real discriminative power where a strong
+  gradient-boosted baseline collapses to near-chance ranking. *If you do not
+  have that problem, use Adam, SGD, or XGBoost.*
 
-## Studies
+## Reasoning geometry
 
-### Reasoning geometry
+The reasoning-geometry study (arXiv:[2410.04415](https://arxiv.org/abs/2410.04415))
+maps an LLM's multi-hop reasoning chain into a phase space and assigns it a
+Hamiltonian "energy" balancing reasoning progression (kinetic) against question
+relevance (potential), using BERT embeddings of each reasoning step on the
+OpenBookQA dataset, with a BERT classifier for chain validity.
 
-The reasoning-geometry study maps LLM multi-hop reasoning chains into a phase space
-and assigns each a Hamiltonian "energy" balancing reasoning progression (kinetic)
-against question relevance (potential). The empirical finding: **valid reasoning
-chains show lower and more stable Hamiltonian energy** than invalid ones — a usable
-**diagnostic** signal, plus smoother, lower-curvature embedding trajectories for
-valid chains.
+**Finding — a usable diagnostic.** Valid reasoning chains carry **lower and
+more tightly concentrated Hamiltonian energy** than invalid ones; the difference
+is statistically significant (**t = −6.53, p = 0.0001**). Valid trajectories
+form a narrow, peaked energy distribution; invalid ones spread broadly toward
+higher energy. Curvature analysis (Frenet–Serret) shows smoother, lower-curvature
+trajectories for valid chains.
 
-**Caveat, as the paper itself states it:** the claimed ability to *steer* or
-*improve* reasoning is metaphorical and not empirically established. The solid
-contribution is the diagnostic geometry, not a causal mechanism. This diagnostic
-thread is the conceptual ancestor of [Groundlens](https://github.com/groundlens-dev/groundlens).
+<!-- figure: drop docs/assets/reasoning_energy_distribution.png — Fig. 9, valid (narrow) vs invalid (broad) energy distributions -->
+<!-- figure: drop docs/assets/pendulum_phase_space.png — pendulum motion ↔ phase-space orbit (intuition) -->
+<!-- figure: drop docs/assets/<experiment figures Javier will provide> -->
 
-→ [`studies/reasoning-geometry/`](studies/reasoning-geometry/) · arXiv:[2410.04415](https://arxiv.org/abs/2410.04415)
+**Caveat, as the paper states it:** the framework's claimed ability to *steer*
+or *improve* reasoning is metaphorical and not empirically established. The solid
+contribution is the **diagnostic geometry**, not a causal mechanism. This
+diagnostic thread is the conceptual ancestor of
+[Groundlens](https://github.com/groundlens-dev/groundlens).
 
-### Geometry limits (negative result)
+→ [`studies/reasoning-geometry/`](studies/reasoning-geometry/)
 
-A separate, systematic study tested whether *generic* isotropic geometric structure
-helps optimization at all — a Geometric Preconditioned Method (GPM) across **seven**
-tasks: image classification, language modeling, rotation-equivariant learning, PDE
-solving, continual learning, temporal prediction, and physical operator learning.
-The result is negative and statistically significant on every task:
+## Where it helps — and where it doesn't
 
-- **Geometric structure consistently underperforms Adam and SGD-with-momentum**,
-  by roughly 10–300% depending on the task.
-- The sole measured advantage is **~50% lower optimizer memory**.
-- Central lesson: *data geometry and loss-landscape geometry are distinct, and the
-  latter dominates optimization dynamics.* If geometry matters for a problem, encode
-  it in the **architecture** (equivariant layers, spectral normalization, symplectic
-  networks), not in a generic optimizer.
+A separate, systematic study tested whether *generic* isotropic geometric
+structure helps optimization at all — a Geometric Preconditioned Method across
+**seven** tasks (image classification, language modeling, rotation-equivariant
+learning, PDE solving, continual learning, temporal prediction, physical
+operator learning). The result is negative and statistically significant on
+every task: **as a general optimizer, geometric structure consistently
+underperforms Adam and SGD-with-momentum** (by ~10–300% depending on the task);
+its sole measured advantage is ~50% lower optimizer memory.
 
-This study is treated as a first-class result: mapping the boundary is the
-contribution, and it is why the optimizer above is scoped as a narrow stability tool
-rather than a default.
+The lesson is precise: *data geometry and loss-landscape geometry are distinct,
+and the latter dominates optimization dynamics.* If geometry matters for a
+problem, encode it in the **architecture** (equivariant layers, spectral
+normalization, symplectic networks), not in a generic optimizer. Mapping this
+boundary is the result, and it is why the optimizer above is scoped as a narrow
+tool rather than a default.
 
 → [`studies/geometry-limits/`](studies/geometry-limits/)
 
-## Applications: credit scoring
-
-The optimizer was validated on out-of-time credit scoring with the Freddie Mac
-loan-level dataset across 12/36/60-month horizons — the source of the "Results, in
-scope" numbers above. The notebooks reproduce the out-of-time evaluation protocol
-(adjacent, non-overlapping time intervals) used in the IEEE DSAA 2025 study.
-
-→ [`applications/credit-scoring/`](applications/credit-scoring/)
-
 ## Scope
-
-A compact statement of what this line claims and does not claim:
 
 | Claim | Status |
 |---|---|
-| Geometric/phase-space energy is a useful **diagnostic** of valid reasoning | Supported (arXiv:2410.04415) |
-| A symplectic optimizer can improve **out-of-time ranking stability** in a regulated, drifting domain | Supported, single domain (IEEE DSAA 2025) |
+| Phase-space energy is a useful **diagnostic** of valid reasoning | Supported, statistically significant (arXiv:2410.04415) |
+| A symplectic optimizer improves **out-of-time risk ranking (AUC)** under class imbalance | Supported, single domain (credit scoring) |
 | Geometric structure improves optimization **in general** | **Refuted** — loses to Adam/SGD across 7 tasks |
 | The reasoning framework **causally steers** reasoning | Not established (metaphor) |
 
@@ -215,35 +234,35 @@ hamiltonian-ai/
 ├── studies/
 │   ├── reasoning-geometry/         phase-space reasoning diagnostics (arXiv:2410.04415)
 │   └── geometry-limits/            the negative-results boundary study
-├── applications/credit-scoring/    IEEE DSAA 2025 notebooks (Freddie Mac OOT)
+├── applications/credit-scoring/    out-of-time notebooks (Freddie Mac, 12/36/60 mo)
 ├── papers/                         preprints, peer-reviewed work, foundational deck
 ├── examples/                       minimal runnable optimizer example
+├── tests/                          minimal optimizer test suite
 └── docs/                           mkdocs-material site
 ```
 
 ## Documentation
 
-Full docs (mkdocs-material, same design as the rest of Groundlens) cover
-installation, the optimizer API, the scoped benchmark, the reasoning diagnostics,
-and the limits study: **[docs.groundlens.dev/hamiltonian-ai](https://docs.groundlens.dev/hamiltonian-ai)**.
+Full docs (mkdocs-material, same design as the rest of Groundlens):
+**[docs.groundlens.dev/hamiltonian-ai](https://docs.groundlens.dev/hamiltonian-ai)**.
 Build locally with `pip install -e ".[docs]" && mkdocs serve`.
 
 ## Papers
 
 | Work | Topic | Status |
 |---|---|---|
-| Geometric Analysis of Reasoning Trajectories | Phase-space diagnostics for multi-hop QA reasoning | arXiv:[2410.04415](https://arxiv.org/abs/2410.04415) (2024) |
+| Optimizing AI Reasoning: A Hamiltonian Dynamics Approach to Multi-Hop QA | Phase-space diagnostics of reasoning trajectories | arXiv:[2410.04415](https://arxiv.org/abs/2410.04415) (2024) |
 | Hamiltonian NN for Out-of-Time Credit Scoring | Symplectic optimizer + Hamiltonian loss; out-of-time ranking | **Accepted (peer-reviewed), IEEE DSAA 2025** — not in the proceedings; cite as peer-reviewed preprint |
 | When Geometric Structure Doesn't Help | Systematic negative-results study on geometric optimization | Working paper / preprint |
 
 PDFs and the foundational deck are in [`papers/`](papers/).
 
-## Citation
+## Citation & references
 
 ```bibtex
 @article{marin2024reasoning,
-  title   = {Geometric Analysis of Reasoning Trajectories: A Phase Space Approach
-             to Understanding Valid and Invalid Multi-Hop Reasoning in LLMs},
+  title   = {Optimizing AI Reasoning: A Hamiltonian Dynamics Approach to
+             Multi-Hop Question Answering},
   author  = {Mar\'in, Javier},
   journal = {arXiv preprint arXiv:2410.04415},
   year    = {2024}
@@ -258,10 +277,16 @@ PDFs and the foundational deck are in [`papers/`](papers/).
 }
 ```
 
+**Conceptual references.** Weyl, H. *Symmetry* (Princeton University Press, 1952).
+Glattfelder, J. B. *The Semantics of Symmetry, Invariance, and Structure*, ch. 3
+in *Information—Consciousness—Reality* (The Frontiers Collection, Springer, 2019,
+open access) — for the synthesis of symmetry, invariance and structure that
+motivates the Hamiltonian framing used here.
+
 ## Contributing, conduct, security
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md),
-[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and [SECURITY.md](SECURITY.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md),
+and [SECURITY.md](SECURITY.md).
 
 ## License
 
@@ -270,10 +295,10 @@ MIT License — see [LICENSE](LICENSE). Author: Javier Marin.
 ## About
 
 `hamiltonian-ai` is a research line of **Groundlens**, an open-source practice for
-trustworthy modeling. Its sibling projects are
-[groundlens](https://github.com/groundlens-dev/groundlens) (geometric verification of
-LLM outputs) and [otwin](https://github.com/groundlens-dev/otwin) (physics-informed
-digital twins). The shared thesis: read the geometry, state the limits.
+trustworthy modeling. Sibling projects:
+[groundlens](https://github.com/groundlens-dev/groundlens) (geometric verification
+of LLM outputs) and [otwin](https://github.com/groundlens-dev/otwin)
+(physics-informed digital twins). The shared thesis: read the geometry, state the limits.
 
 ---
 
